@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{ News.js }</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container">
+      <header class="header">
+        <h1 id="title">{ News.js }</h1>
+        <p id="subtitle">All your news, in one place. Thanks, JavaScript.</p>
+        <div id="sources-container">
+          <p id="source-selector">Select your news source</p>
+          <select id="sources" name="sources">
+            <option value="Sources" disabled selected>Choose a source</option>
+          </select>
+          <p id="filter-selector">Select a filter</p>
+          <select id="filters" name="filters">
+            <option value="filters" disabled selected>Choose a filter</option>
+          </select>
+        </div>
+
+      </header>
+
+      <main class="main-content">
+
+        <h2 id="source-name"></h2>
+        <a id="source-url"></a>
+        <ul id="articles">
+
+        </ul>
+      </main>
+
+    </div>
+  </body>
+</html>
