@@ -2,6 +2,85 @@ var app = function() {
 
   var apiKey = "a87d02c3a93144409bb4e9b6becb566c";
 
+  var removeBookmarkedArticle = function(removeBookmarkButton) {
+    var bookmarkedArticles = JSON.parse(localStorage.getItem("bookmarkedArticles")) || [];
+    var articleToRemove = removeBookmarkButton.article;
+    var updatedBookmarkedArticles = bookmarkedArticles.filter(function(article) {
+      return article.title !== articleToRemove.title;
+    });
+    localStorage.setItem("bookmarkedArticles", JSON.stringify(updatedBookmarkedArticles));
+    displayBookmarkedArticles();
+  }
+
+  var inititaliseRemoveBookmark = function() {
+    var removeBookmarkButtons = Array.from(
+      document.getElementsByClassName("remove-bookmark-button"));
+    removeBookmarkButtons.forEach(function(removeBookmarkButton) {
+      removeBookmarkButton.addEventListener("click", function() {
+        removeBookmarkedArticle(removeBookmarkButton);
+      });
+    });
+  }
+
+  var displayBookmarkedArticles = function() {
+    var ul = document.getElementById("articles");
+    while (ul.firstChild) { ul.removeChild(ul.firstChild) }
+    var heading = document.getElementById("source-name");
+    heading.innerText = "Bookmarks";
+    var url = document.getElementById("source-url");
+    url.innerText = "";
+
+    var bookmarkedArticles = JSON.parse(localStorage.getItem("bookmarkedArticles")) || [];
+    bookmarkedArticles.forEach(function(article) {
+      var articleListItem = document.createElement("li");
+      var articleDiv = document.createElement("div");
+      articleDiv.id = "article-container";
+      var articleTitle = document.createElement("h3");
+      articleTitle.innerText = article.title;
+      var articleImage = document.createElement("img");
+      articleImage.src = article.urlToImage;
+      var articleDescription = document.createElement("p");
+      articleDescription.innerText = article.description;
+      var articleURL = document.createElement("a");
+      articleURL.href = article.url;
+      articleURL.innerText = "Read more";
+      var removeBookmarkButton = document.createElement("button");
+      removeBookmarkButton.classList = "remove-bookmark-button";
+      removeBookmarkButton.innerText = "Remove";
+      removeBookmarkButton.article = article;
+
+      ul.appendChild(articleListItem);
+      articleListItem.appendChild(articleDiv);
+      articleDiv.appendChild(articleTitle);
+      articleDiv.appendChild(articleImage);
+      articleDiv.appendChild(articleDescription);
+      articleDiv.appendChild(articleURL);
+      articleDiv.appendChild(removeBookmarkButton);
+      inititaliseRemoveBookmark();
+    });
+  }
+
+  var inititaliseBookmarkViewButton = function() {
+    var viewBookmarksButton = document.getElementById("view-bookmarks-button");
+    viewBookmarksButton.addEventListener("click", function() {
+      displayBookmarkedArticles();
+    });
+  }
+
+  var inititaliseBookmark = function() {
+    var bookmarkButtons = Array.from(document.getElementsByClassName("bookmark-button"));
+    var bookmarkedArticles = JSON.parse(localStorage.getItem("bookmarkedArticles")) || [];
+    bookmarkButtons.forEach(function(bookmarkButton) {
+      bookmarkButton.addEventListener("click", function() {
+        var bookmarkedArticle = bookmarkButton.article;
+        bookmarkedArticles.push(bookmarkedArticle);
+        console.log(bookmarkedArticles);
+        localStorage.setItem("bookmarkedArticles", JSON.stringify(bookmarkedArticles));
+      });
+    });
+    inititaliseBookmarkViewButton();
+  }
+
   var applyFilter = function(sources) {
     var filterSelect = document.getElementById("filters");
     filterSelect.addEventListener("change", function() {
@@ -54,6 +133,10 @@ var app = function() {
       var articleURL = document.createElement("a");
       articleURL.href = article.url;
       articleURL.innerText = "Read more";
+      var bookmarkButton = document.createElement("button");
+      bookmarkButton.classList = "bookmark-button";
+      bookmarkButton.innerText = "Bookmark";
+      bookmarkButton.article = article;
 
       ul.appendChild(articleListItem);
       articleListItem.appendChild(articleDiv);
@@ -61,7 +144,10 @@ var app = function() {
       articleDiv.appendChild(articleImage);
       articleDiv.appendChild(articleDescription);
       articleDiv.appendChild(articleURL);
-    })
+      articleDiv.appendChild(bookmarkButton);
+    });
+
+    inititaliseBookmark(articles);
   }
 
   var getSourceArticles = function(sources, selectedSource) {

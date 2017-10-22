@@ -16,7 +16,7 @@ img {
 
 .header {
   width:80%;
-  height:140px;
+  height:160px;
   background-color: #F7F7F7;
   margin:auto;
   align-content: center;
@@ -68,6 +68,10 @@ select {
   margin: 0 auto;
 }
 
+#view-bookmarks-button {
+  margin-top: 10px;
+}
+
 .main-content {
  width:80%;
  background-color: white;
@@ -102,4 +106,12 @@ ul {
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
+}
+
+.bookmark-button {
+  max-width: 80px;
+}
+
+.remove-bookmark-button {
+  max-width: 80px;
 }
